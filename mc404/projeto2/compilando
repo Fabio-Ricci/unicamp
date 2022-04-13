@@ -1,0 +1,29 @@
+
+source /home/specg12-1/mc404/simulador/set_path.sh
+
+arm-eabi-as -g soul.s -o soul.o
+arm-eabi-ld soul.o -o soul -g --section-start=.iv=0x778005e0 -Ttext=0x77800700 -Tdata=0x77801800 -e 0x778005e0
+
+
+arm-eabi-as -g bico.s -o bico.o
+
+
+arm-eabi-gcc loco.c -S -o loco.s
+arm-eabi-as -g loco.s -o loco.o
+
+
+arm-eabi-ld loco.o bico.o -o user_code -g -Ttext=0x77812000 -Tdata=0x77813000
+
+
+mksd.sh --so soul --user user_code 
+
+source /home/specg12-2/mc404/simulador/set_path_player.sh
+
+armsim_player --rom=/home/specg12-1/mc404/simulador/simulador_player/bin/dumboot.bin --sd=disk.img
+
+7-
+player /home/specg12-1/mc404/simulador/simulador_player/worlds_mc404/simple.cfg
+
+8-
+armsim_player --rom=/home/specg12-1/mc404/simulador/simulador_player/bin/dumboot.bin --sd=disk.img
+ -g

@@ -1,0 +1,4 @@
+
+vark: .word 15027
+
+.:    .word 1     #Erro Lexico: Invalido

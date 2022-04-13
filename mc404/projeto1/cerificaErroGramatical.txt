@@ -1,0 +1,138 @@
+/**
+ * Verifica se ha erro Gramatical
+ * Retorna 0 se tokens válidos
+ * Retorna numero da linha invalida se tokens invalidos
+ */
+int verificaErroGramatical() {
+  int i, numberOfTokens = getNumberOfTokens();
+  Token atual, prox;
+  if (numberOfTokens > 0) {
+    for (i = 0; i < numberOfTokens; i++) {
+      if (i < numberOfTokens) {
+        atual = recuperaToken(i);
+        prox = recuperaToken(i + 1);
+
+        switch (atual.tipo) {
+          case DefRotulo: {
+            if (prox.tipo == DefRotulo && prox.linha == atual.linha) {
+              return atual.linha;
+            }
+            if (prox.tipo == Nome || prox.tipo == Hexadecimal || prox.tipo == Decimal || prox.tipo == Nome) {
+              return atual.linha;
+            }
+            break;
+          }
+          case Diretiva: {
+            if (i == numberOfTokens - 1) { // Diretiva como ultima palavra sem parametros
+              return atual.linha;
+            }
+            if (atual.linha != prox.linha) {
+              return atual.linha;
+            }
+            if (strcmp(atual.palavra, ".org") == 0) {
+              if (prox.tipo != Hexadecimal && prox.tipo != Decimal) {
+                return atual.linha;
+              }
+              if (prox.tipo == Decimal) {
+                if (verificaIntervaloDecimal(prox.palavra, 0, 1023)) {
+                  return atual.linha;
+                }
+              }
+            }
+            if (strcmp(atual.palavra, ".align") == 0) {
+              if (prox.tipo != Decimal) {
+                return atual.linha;
+              }
+              if (verificaIntervaloDecimal(prox.palavra, 0, 1023)) {
+                return atual.linha;
+              }
+            }
+            if (strcmp(atual.palavra, ".wfill") == 0) {
+              if (prox.tipo != Decimal) {
+                return atual.linha;
+              }
+              if (verificaIntervaloDecimal(prox.palavra, 0, 1023)) {
+                return atual.linha;
+              }
+            }
+            if (strcmp(atual.palavra, ".set") == 0) {
+              if (prox.tipo != Nome) {
+                return atual.linha;
+              }
+              i++;
+              if (i >= numberOfTokens) {
+                return atual.linha;
+              }
+              atual = prox;
+              prox = recuperaToken(i + 1);
+              if (atual.linha != prox.linha && prox.tipo != Hexadecimal && prox.tipo != Decimal) {
+                return atual.linha;
+              }
+              if (prox.tipo == Decimal) {
+                if (verificaIntervaloDecimal(prox.palavra,
+                                             (long int) pow(-2, 31),
+                                             (long int) (pow(2, 31) - 1))) { // -2^31 -> 2^31-1
+                  return atual.linha;
+                }
+              }
+            }
+            if (strcmp(atual.palavra, ".word") == 0) {
+              if (prox.tipo != Hexadecimal && prox.tipo != Decimal && prox.tipo != Nome) {
+                return atual.linha;
+              }
+              if (prox.tipo == Decimal) {
+                if (verificaIntervaloDecimal(prox.palavra,
+                                             (long int) pow(-2, 31),
+                                             (long int) (pow(2, 31) - 1))) { // -2^31 -> 2^31-1
+                  return atual.linha;
+                }
+              }
+            }
+            break;
+          }
+          case Instrucao: {
+
+            break;
+          }
+          case Hexadecimal: {
+            if (atual.linha == prox.linha) {
+              if (prox.tipo == DefRotulo || prox.tipo == Diretiva || prox.tipo == Instrucao) {
+                return atual.linha;
+              }
+            }
+            if (prox.tipo == Hexadecimal || prox.tipo == Decimal) { // || prox.tipo == Nome
+              return prox.linha;
+            }
+            break;
+          }
+          case Decimal: {
+            if (atual.linha == prox.linha) {
+              if (prox.tipo == DefRotulo || prox.tipo == Diretiva || prox.tipo == Instrucao) {
+                return atual.linha;
+              }
+            } else {
+              if (prox.tipo == Hexadecimal || prox.tipo == Decimal || prox.tipo == Nome) {
+                return prox.linha;
+              }
+            }
+            break;
+          }
+          case Nome: {
+            if (atual.linha == prox.linha) {
+              if (prox.tipo == DefRotulo || prox.tipo == Diretiva || prox.tipo == Instrucao
+                  || prox.tipo == Hexadecimal) {
+                return atual.linha;
+              }
+            } else {
+              if (prox.tipo == Nome) {
+                return prox.linha;
+              }
+            }
+            break;
+          }
+        }
+      }
+    }
+  }
+  return 0;
+}

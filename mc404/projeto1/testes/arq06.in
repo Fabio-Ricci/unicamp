@@ -1,0 +1,5 @@
+var1:   ADD 10
+var2:
+    ADD 15
+
+ SUB :var1  #Erro Lexico
