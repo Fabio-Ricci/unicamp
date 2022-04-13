@@ -1,0 +1,110 @@
+double getCost(setint s, int prevVertex, mapIndex, double minCostDP) {
+    s.erase(prevVertex);
+    Index index;
+    index.currentVertex = prevVertex;
+    index.vertexSet = s;
+    double cost = minCostDP.find(index)-second;
+    s.insert(prevVertex);
+    return cost;
+}
+
+setint createSet(int input, int pos) {
+    setint s;
+    if (pos == 0) {
+        return s;
+    }
+
+    for (int i = 0; i  pos; i++) {
+        s.insert(input[i]);
+    }
+    return s;
+}
+
+void generateCombinations(int input, int start, int pos, vectorsetint allSets, int result) {
+    int n = sizeof(input)  sizeof(input);
+    if (pos == n) {
+        return;
+    }
+    setint s = createSet(result, pos);
+    allSets.insert(allSets.end(), s);
+    for (int i = start; i  n; i++) {
+        result[pos] = input[i];
+        generateCombinations(input, i + 1, pos + 1, allSets, result);
+    }
+}
+
+vectorsetint generateCombinations(int n) {
+    int input = new int[n];
+    for (int i = 0; i  n; i++) {
+        input[i] = i + 1;
+    }
+    vectorsetint allSets;
+    int result = new int[n];
+    generateCombinations(input, 0, 0, allSets, result);
+
+}
+
+vectorint solveBottomUp(Instance &instance, int timelimit, chronohigh_resolution_clocktime_point &started){
+	vectorint sol;
+
+    double dist = new double [instance.n];
+    for (int i = 0; i  instance.n; i++) {
+        dist[i] = new double[instance.n];
+        for (int j = 0; j  instance.n; j++) {
+            dist[i][j] = getDistance(instance.points[i], instance.points[j]);
+        }
+    }
+
+    mapIndex, double minCostDP;
+    mapIndex, int parent;
+
+    vectorsetint allSets = generateCombinations(instance.n - 1);
+    for (setint s  allSets) {
+        for (int currentVertex = 0; currentVertex   instance.n; currentVertex ++) {
+            if (s.count(currentVertex) != 0) {
+                continue;
+            }
+            Index index;
+            index.currentVertex = currentVertex;
+            index.vertexSet = s;
+            double minCost = numeric_limitsdoublemax();
+            int minPrevVertex;
+            setint copySet(s);
+
+            for (int prevVertex  s) {
+                double cost = dist[prevVertex][currentVertex] + getCost(copySet, prevVertex, minCostDP);
+                if (cost  minCost) {
+                    minCost = cost;
+                    minPrevVertex = prevVertex;
+                }
+            }
+            if (s.size() == 0) {
+                minCost = dist[0][currentVertex];
+            }
+            minCostDP.insert(pairIndex, double(index, minCost));
+            parent.insert(pairIndex, int(index, minPrevVertex));
+        }
+    }
+
+    setint s;
+    for (int i = 1; i  instance.n; i++) {
+        s.insert(i);
+    }
+    double min = numeric_limitsdoublemax();
+    int prevVertex = -1;
+    setint copySet(s);
+
+    for (int k  s) {
+        double cost = dist[k][0] + getCost(copySet, k, minCostDP);
+        if (cost  min) {
+            min = cost;
+            prevVertex = k;
+        }
+    }
+    Index index;
+    index.currentVertex = 0;
+    index.vertexSet = s;
+    parent.insert(pairIndex, int(index, prevVertex));
+
+    return sol;
+}

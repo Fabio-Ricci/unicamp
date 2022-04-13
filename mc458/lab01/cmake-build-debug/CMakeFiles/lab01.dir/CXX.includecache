@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+E:/Fabio/UNICAMP/5 Semestre/MC458/MC458/lab01/src/instance.h
+vector
+-
+string
+-
+point.h
+E:/Fabio/UNICAMP/5 Semestre/MC458/MC458/lab01/src/point.h
+
+E:/Fabio/UNICAMP/5 Semestre/MC458/MC458/lab01/src/point.h
+
+E:/Fabio/UNICAMP/5 Semestre/MC458/MC458/lab01/src/solver.cpp
+solver.h
+E:/Fabio/UNICAMP/5 Semestre/MC458/MC458/lab01/src/solver.h
+
+E:/Fabio/UNICAMP/5 Semestre/MC458/MC458/lab01/src/solver.h
+vector
+-
+map
+-
+cmath
+-
+bits/stdc++.h
+-
+algorithm
+-
+chrono
+-
+limits
+-
+point.h
+E:/Fabio/UNICAMP/5 Semestre/MC458/MC458/lab01/src/point.h
+instance.h
+E:/Fabio/UNICAMP/5 Semestre/MC458/MC458/lab01/src/instance.h
+

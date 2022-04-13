@@ -1,0 +1,15 @@
+songs
+songs_wav
+songs_converted
+.DS_Store
+ENV
+__pycache__
+src/graphs
+src/models
+
+test/
+test_reconstructed/
+
+preprocessed
+
+.vscode/
